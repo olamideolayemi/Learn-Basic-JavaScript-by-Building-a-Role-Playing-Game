@@ -1,0 +1,1 @@
+It is important to be aware of what values a method returns. Take some time to experiment with .push() and .pop().

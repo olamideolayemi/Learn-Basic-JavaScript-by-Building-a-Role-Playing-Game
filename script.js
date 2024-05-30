@@ -20,43 +20,119 @@ const monsterStats = document.querySelector("#monsterStats");
 const monsterName = document.querySelector("#monsterName");
 const monsterHealthText = document.querySelector("#monsterHealth");
 
+const weapons = [
+  {
+    name: "stick",
+    power: 5
+  },
+  {
+    name: "dagger",
+    power: 30
+  },
+  {
+    name: "claw hammer",
+    power: 50
+  },
+  {
+    name: "sword",
+    power: 100
+  },
+];
+
+const locations = [
+  {
+    name: "town square",
+    "button text": ["Go to store", "Go to cave", "Fight dragon"],
+    "button functions": [goStore, goCave, fightDragon],
+    text: "You are in the town square. You see a sign that says \"Store\"."
+  },
+  {
+    name: "store",
+    "button text": ["Buy 10 health (10 gold)", "Buy weapon (30 gold)", "Go to town square"],
+    "button functions": [buyHealth, buyWeapon, goTown],
+    text: "You enter the store."
+  },
+  {
+    name: "cave",
+    "button text": ["Fight slime", "Fight fanged beast", "Go to town square"],
+    "button functions": [fightSlime, fightBeast, goTown],
+    text: "You enter the cave. You see some monsters."
+  },
+];
+
+
+// initialize buttons
+// assigning the buttons to the entire game app
+button1.onclick = goStore;
+button2.onclick = goCave;
+button3.onclick = fightDragon;
+
+
+// there is repitition in the functions
+// this function will serve as a data structure that will hold the different locations  like Store,Cave and Town square
+function update(location) {
+   // the innerText property changes the text of an element property
+  button1.innerText = location["button text"][0];
+  button2.innerText = location["button text"][1];
+  button3.innerText = location["button text"][2];
+  // the onclick property assigns the operation the button should carryout when clicked
+  button1.onclick = location["button functions"][0];
+  button2.onclick = location["button functions"][1];
+  button3.onclick = location["button functions"][2];
+  text.innerText = location.text;
+}
+
 // goTown fucntion is like the supposed Home page
 function goTown() {
-  button1.innerText = "Go to store"
-  button2.innerText = "Go to cave"
-  button3.innerText = "Fight dragon"
-  button1.onclick = goStore;
-  button2.onclick = goCave;
-  button3.onclick = fightDragon;
-  text.innerText = "You are in the town square. You see a sign that says Store."
+  update(locations[0]);
 }
 function goStore() {
-  // the innerText property changes the text of an element property
-  button1.innerText = "Buy 10 health (10 gold)"
-  button2.innerText = "Buy weapon (30 gold)"
-  button3.innerText = "Go to town square"
-  button1.onclick = buyHealth;
-  button2.onclick = buyWeapon;
-  button3.onclick = goTown;
-  text.innerText = "You enter the store."
+  update(locations[1]);
 }
 function goCave() {
-  console.log("Going to cave.")
+  update(locations[2]);
 }
 function fightDragon() {
   console.log("Fighting dragon.")
 }
 function buyHealth() {
- 
+  if (gold >= 10) {
+    gold -= 10;
+    health += 10;
+    // we need to make the gold and health values to change to the above new values so the innerText is used
+    goldText.innerText = gold;
+    healthText.innerText = health;
+  } else {
+    text.innerText = "You do not have enough gold to buy health.";
+  }
 }
 function buyWeapon() {
- 
+  if (gold >= 30) {
+    gold -= 30;
+    currentWeaponIndex ++;
+    goldText.innerText = gold;
+    let newWeapon = weapons[currentWeaponIndex].name;
+    text.innerText = "You now have a " + newWeapon + ".";
+    inventory.push(newWeapon);
+  }
+}
+function fightSlime() {
+
+}
+function fightBeast() {
+
 }
 
 
 
-// initialize buttons
-button1.onclick = goStore;
-button2.onclick = goCave;
-button3.onclick = fightDragon;
-
+// a short example on objects
+// const cat = {
+//   name: "Whiskers",
+//   "Number of legs": 4
+// }
+// console.log(cat);
+// heres an example below of using dot notation to read the name property of the cat object above
+// console.log(cat.name);
+// heres an example below of using bracket notation to read the name property of the cat object above
+//  If the property of the object you are trying to access has a space in its name, you will need to use bracket notation.
+// cat["Number of legs"];
